@@ -21,13 +21,6 @@ jobs:
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
 
-#      - name: Configure AWS credentials
-#        uses: aws-actions/configure-aws-credentials@v1
-#        with:
-#          aws-access-key-id: ${{ secrets.PREPROD_AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ secrets.PREPROD_AWS_SECRET_ACCESS_KEY }}
-#          aws-region: ${{ secrets.PREPROD_AWS_REGION }}
-
       - name: Login to Amazon ECR
         run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
@@ -60,16 +53,11 @@ jobs:
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.PREPROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PREPROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.PREPROD_AWS_REGION }}
-
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
+        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.PREPROD_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.PREPROD_AWS_SECRET_ACCESS_KEY }}
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
       - name: Build the image
@@ -99,16 +87,11 @@ jobs:
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.PREPROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PREPROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.PREPROD_AWS_REGION }}
-
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
+        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.PREPROD_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.PREPROD_AWS_SECRET_ACCESS_KEY }}
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
       - name: Build the image
@@ -138,16 +121,11 @@ jobs:
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.PREPROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PREPROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.PREPROD_AWS_REGION }}
-
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
+        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.PREPROD_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.PREPROD_AWS_SECRET_ACCESS_KEY }}
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
       - name: Build the image
@@ -218,16 +196,11 @@ jobs:
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.PREPROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PREPROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.PREPROD_AWS_REGION }}
-
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
+        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.PREPROD_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.PREPROD_AWS_SECRET_ACCESS_KEY }}
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
       - name: Build the image
