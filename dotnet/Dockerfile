@@ -1,7 +1,7 @@
 ARG RELEASE_VERSION
 ARG REPOSITORY_BASE_PATH
 
-FROM ${REPOSITORY_BASE_PATH}/pulumi-base-debian:${RELEASE_VERSION}
+FROM ${REPOSITORY_BASE_PATH}/runner-pulumi-base-debian:${RELEASE_VERSION}
 
 USER root
 RUN apt-get install -y icu-devtools
