@@ -29,7 +29,7 @@ jobs:
 #          aws-region: ${{ secrets.PREPROD_AWS_REGION }}
 
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
+        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.PREPROD_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.PREPROD_AWS_SECRET_ACCESS_KEY }}
