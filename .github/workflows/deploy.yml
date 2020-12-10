@@ -21,7 +21,7 @@ jobs:
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
 
       - name: Build the image
-        run: cd base-alpine && docker build --tag quay.io/spacelift/pulumi-base-alpine:${RELEASE_VERSION} .
+        run: cd base-alpine && docker build --build-arg PULUMI_VERSION=${RELEASE_VERSION} --tag quay.io/spacelift/pulumi-base-alpine:${RELEASE_VERSION} .
 
       - name: Push the image to quay.io
         run: docker push quay.io/spacelift/pulumi-base-alpine:${RELEASE_VERSION}
@@ -41,7 +41,7 @@ jobs:
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
 
       - name: Build the image
-        run: cd base-debian && docker build --tag quay.io/spacelift/pulumi-base-debian:${RELEASE_VERSION} .
+        run: cd base-debian && docker build --build-arg PULUMI_VERSION=${RELEASE_VERSION} --tag quay.io/spacelift/pulumi-base-debian:${RELEASE_VERSION} .
 
       - name: Push the image to quay.io
         run: docker push quay.io/spacelift/pulumi-base-debian:${RELEASE_VERSION}
@@ -63,7 +63,7 @@ jobs:
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
 
       - name: Build the image
-        run: cd javascript && docker build --tag quay.io/spacelift/pulumi-javascript:${RELEASE_VERSION} .
+        run: cd javascript && docker build --build-arg PULUMI_VERSION=${RELEASE_VERSION} --tag quay.io/spacelift/pulumi-javascript:${RELEASE_VERSION} .
 
       - name: Push the image to quay.io
         run: docker push quay.io/spacelift/pulumi-javascript:${RELEASE_VERSION}
@@ -85,7 +85,7 @@ jobs:
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
 
       - name: Build the image
-        run: cd golang && docker build --tag quay.io/spacelift/pulumi-golang:${RELEASE_VERSION} .
+        run: cd golang && docker build --build-arg PULUMI_VERSION=${RELEASE_VERSION} --tag quay.io/spacelift/pulumi-golang:${RELEASE_VERSION} .
 
       - name: Push the image to quay.io
         run: docker push quay.io/spacelift/pulumi-golang:${RELEASE_VERSION}
@@ -107,7 +107,7 @@ jobs:
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
 
       - name: Build the image
-        run: cd python && docker build --tag quay.io/spacelift/pulumi-python:${RELEASE_VERSION} .
+        run: cd python && docker build --build-arg PULUMI_VERSION=${RELEASE_VERSION} --tag quay.io/spacelift/pulumi-python:${RELEASE_VERSION} .
 
       - name: Push the image to quay.io
         run: docker push quay.io/spacelift/pulumi-python:${RELEASE_VERSION}
@@ -129,7 +129,7 @@ jobs:
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
 
       - name: Build the image
-        run: cd dotnet && docker build --tag quay.io/spacelift/pulumi-dotnet:${RELEASE_VERSION} .
+        run: cd dotnet && docker build --build-arg PULUMI_VERSION=${RELEASE_VERSION} --tag quay.io/spacelift/pulumi-dotnet:${RELEASE_VERSION} .
 
       - name: Push the image to quay.io
         run: docker push quay.io/spacelift/pulumi-dotnet:${RELEASE_VERSION}
