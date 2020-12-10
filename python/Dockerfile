@@ -1,6 +1,6 @@
-ARG PULUMI_VERSION
+ARG RELEASE_VERSION
 
-FROM quay.io/spacelift/dev-pulumi-base-debian:${PULUMI_VERSION}
+FROM ${REPOSITORY_BASE_PATH}/pulumi-base-debian:${RELEASE_VERSION}
 
 USER root
 RUN apt-get install -y python3 python3-pip python3-dev && ln -sf python3 /usr/bin/python

@@ -1,8 +1,8 @@
-ARG PULUMI_VERSION
+ARG RELEASE_VERSION
 
 FROM golang:1.15-alpine3.12 as golang-source
 
-FROM quay.io/spacelift/dev-pulumi-base-alpine:${PULUMI_VERSION}
+FROM ${REPOSITORY_BASE_PATH}/pulumi-base-alpine:${RELEASE_VERSION}
 USER root
 WORKDIR /home/spacelift
 COPY --from=golang-source /usr/local/go /usr/local/go
