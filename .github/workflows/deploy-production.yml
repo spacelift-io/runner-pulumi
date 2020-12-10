@@ -175,7 +175,7 @@ jobs:
   dotnet:
     needs:
       - base-debian
-    name: Build and deploy the Python image
+    name: Build and deploy the .Net image
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
