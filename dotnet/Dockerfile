@@ -1,7 +1,5 @@
-# This image has working dotnet on it, but the proper Stack
-# configuration in order for it to work with Spacelift is tricky.
-
 ARG RELEASE_VERSION
+ARG REPOSITORY_BASE_PATH
 
 FROM ${REPOSITORY_BASE_PATH}/pulumi-base-debian:${RELEASE_VERSION}
 
