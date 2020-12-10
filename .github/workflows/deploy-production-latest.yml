@@ -15,7 +15,7 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
       - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION#latest-}" >> $GITHUB_ENV
+        run: echo "PULUMI_VERSION=${GITHUB_REF#latest-}" >> $GITHUB_ENV
 
       - name: Install latest AWS CLI
         id: install-aws-cli
@@ -47,7 +47,7 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
       - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION#latest-}" >> $GITHUB_ENV
+        run: echo "PULUMI_VERSION=${GITHUB_REF#latest-}" >> $GITHUB_ENV
 
       - name: Install latest AWS CLI
         id: install-aws-cli
@@ -81,7 +81,7 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
       - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION#latest-}" >> $GITHUB_ENV
+        run: echo "PULUMI_VERSION=${GITHUB_REF#latest-}" >> $GITHUB_ENV
 
       - name: Install latest AWS CLI
         id: install-aws-cli
@@ -115,7 +115,7 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
       - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION#latest-}" >> $GITHUB_ENV
+        run: echo "PULUMI_VERSION=${GITHUB_REF#latest-}" >> $GITHUB_ENV
 
       - name: Install latest AWS CLI
         id: install-aws-cli
@@ -149,7 +149,7 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
       - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION#latest-}" >> $GITHUB_ENV
+        run: echo "PULUMI_VERSION=${GITHUB_REF#latest-}" >> $GITHUB_ENV
 
       - name: Install latest AWS CLI
         id: install-aws-cli
@@ -183,7 +183,7 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
       - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION#latest-}" >> $GITHUB_ENV
+        run: echo "PULUMI_VERSION=${GITHUB_REF#latest-}" >> $GITHUB_ENV
 
       - name: Install latest AWS CLI
         id: install-aws-cli
