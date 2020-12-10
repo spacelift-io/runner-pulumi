@@ -7,6 +7,3 @@ RUN apt-get install -y python3 python3-pip python3-dev && ln -sf python3 /usr/bi
 RUN pip3 install --no-cache --upgrade pip setuptools wheel
 USER spacelift
 ENV PATH="$PATH:./.pulumi/bin"
-
-# before_init:
-#   - pip install -r requirements.txt

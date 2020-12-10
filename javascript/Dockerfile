@@ -6,6 +6,3 @@ USER root
 WORKDIR /home/spacelift
 RUN apk add bash nodejs npm
 USER spacelift
-
-# before_init:
-#   - npm install
