@@ -31,6 +31,7 @@ jobs:
       - name: Login to Amazon ECR
         run: aws ecr-public get-login-password | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
+          AWS_REGION: ${{ secrets.PREPROD_AWS_REGION }}
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
       - name: Build the image
