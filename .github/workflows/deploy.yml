@@ -12,15 +12,16 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@master
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Set env
+        run: echo "PULUMI_VERSION=${RELEASE_VERSION#dev-}" >> $GITHUB_ENV
       - name: Log in to quay.io
         run: echo ${QUAY_PASSWORD} | docker login --username ${QUAY_USERNAME} --password-stdin quay.io
         env:
           QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION#dev-}" >> $GITHUB_ENV
+
       - name: Build the image
         run: cd base-alpine && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag quay.io/spacelift/pulumi-base-alpine:${RELEASE_VERSION} .
 
