@@ -100,7 +100,7 @@ jobs:
 
   python:
     needs:
-      - base-alpine
+      - base-debian
     name: Build and deploy the Python image
     runs-on: ubuntu-latest
     steps:
@@ -124,7 +124,7 @@ jobs:
 
   dotnet:
     needs:
-      - base-alpine
+      - base-debian
     name: Build and deploy the Python image
     runs-on: ubuntu-latest
     steps:
