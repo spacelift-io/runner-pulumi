@@ -29,12 +29,12 @@ jobs:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
-        run: cd base-alpine && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}runner-pulumi-base-alpine:${RELEASE_VERSION} .
+        run: cd base-alpine && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-base-alpine:${RELEASE_VERSION} .
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
-        run: docker push ${REPOSITORY_BASE_PATH}runner-pulumi-base-alpine:${RELEASE_VERSION}
+      - name: Push the image to ECR
+        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-base-alpine:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
@@ -61,12 +61,12 @@ jobs:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
-        run: cd base-debian && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}runner-pulumi-base-debian:${RELEASE_VERSION} .
+        run: cd base-debian && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-base-debian:${RELEASE_VERSION} .
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
-        run: docker push ${REPOSITORY_BASE_PATH}runner-pulumi-base-debian:${RELEASE_VERSION}
+      - name: Push the image to ECR
+        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-base-debian:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
@@ -95,12 +95,12 @@ jobs:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
-        run: cd javascript && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}runner-pulumi-javascript:${RELEASE_VERSION} .
+        run: cd javascript && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-javascript:${RELEASE_VERSION} .
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
-        run: docker push ${REPOSITORY_BASE_PATH}runner-pulumi-javascript:${RELEASE_VERSION}
+      - name: Push the image to ECR
+        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-javascript:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
@@ -129,12 +129,12 @@ jobs:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
-        run: cd golang && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}runner-pulumi-golang:${RELEASE_VERSION} .
+        run: cd golang && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-golang:${RELEASE_VERSION} .
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
-        run: docker push ${REPOSITORY_BASE_PATH}runner-pulumi-golang:${RELEASE_VERSION}
+      - name: Push the image to ECR
+        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-golang:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
@@ -163,12 +163,12 @@ jobs:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
-        run: cd python && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}runner-pulumi-python:${RELEASE_VERSION} .
+        run: cd python && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-python:${RELEASE_VERSION} .
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
-        run: docker push ${REPOSITORY_BASE_PATH}runner-pulumi-python:${RELEASE_VERSION}
+      - name: Push the image to ECR
+        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-python:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
@@ -197,11 +197,11 @@ jobs:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
-        run: cd dotnet && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}runner-pulumi-dotnet:${RELEASE_VERSION} .
+        run: cd dotnet && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-dotnet:${RELEASE_VERSION} .
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
-        run: docker push ${REPOSITORY_BASE_PATH}runner-pulumi-dotnet:${RELEASE_VERSION}
+      - name: Push the image to ECR
+        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-dotnet:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}

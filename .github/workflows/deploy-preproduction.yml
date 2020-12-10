@@ -33,7 +33,7 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
+      - name: Push the image to ECR
         run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-base-alpine:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
@@ -65,7 +65,7 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
+      - name: Push the image to ECR
         run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-base-debian:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
@@ -99,7 +99,7 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
+      - name: Push the image to ECR
         run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-javascript:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
@@ -133,7 +133,7 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
+      - name: Push the image to ECR
         run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-golang:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
@@ -167,7 +167,7 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
+      - name: Push the image to ECR
         run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-python:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
@@ -201,7 +201,7 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
 
-      - name: Push the image to quay.io
+      - name: Push the image to ECR
         run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-dotnet:${RELEASE_VERSION}
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
