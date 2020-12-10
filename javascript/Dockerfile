@@ -1,6 +1,6 @@
 ARG PULUMI_VERSION
 
-FROM quay.io/spacelift/pulumi-base-alpine:${PULUMI_VERSION}
+FROM quay.io/spacelift/dev-pulumi-base-alpine:${PULUMI_VERSION}
 
 USER root
 WORKDIR /home/spacelift
