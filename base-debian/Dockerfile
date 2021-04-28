@@ -6,7 +6,7 @@ RUN echo "hosts: files dns" > /etc/nsswitch.conf \
 
 USER root
 WORKDIR /home/spacelift
-RUN apt-get update
+RUN apt-get update -y
 RUN apt-get install -y wget
 RUN wget "https://get.pulumi.com/releases/sdk/pulumi-${PULUMI_VERSION}-linux-x64.tar.gz"
 RUN tar -xf pulumi-${PULUMI_VERSION}-linux-x64.tar.gz

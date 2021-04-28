@@ -4,7 +4,7 @@ ARG REPOSITORY_BASE_PATH
 FROM ${REPOSITORY_BASE_PATH}/runner-pulumi-base-debian:${RELEASE_VERSION}
 
 USER root
-RUN apt-get install -y icu-devtools
+RUN apt-get update -y && apt-get install -y icu-devtools
 USER spacelift
 RUN wget https://dot.net/v1/dotnet-install.sh
 RUN chmod 777 dotnet-install.sh
