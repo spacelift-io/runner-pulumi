@@ -1,9 +1,9 @@
 name: Deploy Preproduction
 
-# on:
-#   push:
-#     tags:
-#       - 'dev-v*.*.*'
+on:
+  push:
+    tags:
+      - 'dev-v*.*.*'
 
 on: [push]
 
@@ -18,8 +18,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Set RELEASE_VERSION
-        run: echo "RELEASE_VERSION=dev-v2.15.4" >> $GITHUB_ENV
-        # run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
       - name: Set PULUMI_VERSION
         run: echo "PULUMI_VERSION=${RELEASE_VERSION#dev-}" >> $GITHUB_ENV
@@ -54,10 +53,8 @@ jobs:
           context: base-${{ matrix.base }}
           build-args: |
             PULUMI_VERSION=${{ env.PULUMI_VERSION }}
-          push: false
           tags: |
             ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}/runner-pulumi-base-${{ matrix.base }}:${{ env.RELEASE_VERSION }}
-            ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}/runner-pulumi-base-${{ matrix.base }}:latest
 
   language:
     needs: [base]
@@ -70,8 +67,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Set RELEASE_VERSION
-        run: echo "RELEASE_VERSION=dev-v2.15.4" >> $GITHUB_ENV
-        # run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
       - name: Set PULUMI_VERSION
         run: echo "PULUMI_VERSION=${RELEASE_VERSION#dev-}" >> $GITHUB_ENV
@@ -108,7 +104,5 @@ jobs:
             PULUMI_VERSION=${{ env.PULUMI_VERSION }}
             REPOSITORY_BASE_PATH=${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
             RELEASE_VERSION=${{ env.RELEASE_VERSION }}
-          push: false
           tags: |
             ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}/runner-pulumi-${{ matrix.language }}:${{ env.RELEASE_VERSION }}
-            ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}/runner-pulumi-${{ matrix.language }}:latest

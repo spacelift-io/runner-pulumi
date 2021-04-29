@@ -6,202 +6,101 @@ on:
       - 'v*.*.*'
 
 jobs:
-  base-alpine:
-    name: Build and deploy the base Alpine image
-    runs-on: ubuntu-latest
+  base:
+    runs-on: self-hosted
+    container: docker
+    name: Build and deploy the base image
+    strategy: { matrix: { base: [alpine, debian] } }
     steps:
       - name: Check out repository code
         uses: actions/checkout@master
-      - name: Set env
+
+      - name: Set RELEASE_VERSION
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Set env
+
+      - name: Set PULUMI_VERSION
         run: echo "PULUMI_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
 
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1.5.8
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-external-id: ${{ secrets.AWS_EXTERNAL_ID }}
+          role-duration-seconds: 900
 
-      - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Install the latest AWS CLI
+        run: |
+          apk add --no-cache python3 py3-pip
+          pip3 install --upgrade pip
+          pip3 install awscli
 
-      - name: Build the image
-        run: cd base-alpine && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-base-alpine:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Log in to Amazon public ECR
+        uses: docker/login-action@v1
+        with:
+          registry: public.ecr.aws
+          username: ${{ env.AWS_ACCESS_KEY_ID }}
+          password: ${{ env.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-base-alpine:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-  base-debian:
-    name: Build and deploy the base Debian image
-    runs-on: ubuntu-latest
+      - name: Build and push the image
+        uses: docker/build-push-action@v2
+        with:
+          context: base-${{ matrix.base }}
+          build-args: |
+            PULUMI_VERSION=${{ env.PULUMI_VERSION }}
+          tags: |
+            ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-base-${{ matrix.base }}:${{ env.RELEASE_VERSION }}
+
+  language:
+    needs: [base]
+    runs-on: self-hosted
+    container: docker
+    name: Build and deploy the language image
+    strategy: { matrix: { language: [javascript, golang, python, dotnet] } }
     steps:
       - name: Check out repository code
         uses: actions/checkout@master
-      - name: Set env
+
+      - name: Set RELEASE_VERSION
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Set env
+
+      - name: Set PULUMI_VERSION
         run: echo "PULUMI_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
 
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1.5.8
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-external-id: ${{ secrets.AWS_EXTERNAL_ID }}
+          role-duration-seconds: 900
 
-      - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Install the latest AWS CLI
+        run: |
+          apk add --no-cache python3 py3-pip
+          pip3 install --upgrade pip
+          pip3 install awscli
 
-      - name: Build the image
-        run: cd base-debian && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-base-debian:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Log in to Amazon public ECR
+        uses: docker/login-action@v1
+        with:
+          registry: public.ecr.aws
+          username: ${{ env.AWS_ACCESS_KEY_ID }}
+          password: ${{ env.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-base-debian:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-  javascript:
-    needs:
-      - base-alpine
-    name: Build and deploy the JavaScript image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@master
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
-
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
-      - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Build the image
-        run: cd javascript && docker build --build-arg REPOSITORY_BASE_PATH=${REPOSITORY_BASE_PATH} --build-arg RELEASE_VERSION=${RELEASE_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-javascript:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-javascript:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-  golang:
-    needs:
-      - base-alpine
-    name: Build and deploy the Go image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@master
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
-
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
-      - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Build the image
-        run: cd golang && docker build --build-arg REPOSITORY_BASE_PATH=${REPOSITORY_BASE_PATH} --build-arg RELEASE_VERSION=${RELEASE_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-golang:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-golang:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-  python:
-    needs:
-      - base-debian
-    name: Build and deploy the Python image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@master
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
-
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
-      - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Build the image
-        run: cd python && docker build --build-arg REPOSITORY_BASE_PATH=${REPOSITORY_BASE_PATH} --build-arg RELEASE_VERSION=${RELEASE_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-python:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-python:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-  dotnet:
-    needs:
-      - base-debian
-    name: Build and deploy the .Net image
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@master
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Set env
-        run: echo "PULUMI_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
-
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
-      - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Build the image
-        run: cd dotnet && docker build --build-arg REPOSITORY_BASE_PATH=${REPOSITORY_BASE_PATH} --build-arg RELEASE_VERSION=${RELEASE_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-dotnet:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-dotnet:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Build and push the image
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.language }}
+          build-args: |
+            PULUMI_VERSION=${{ env.PULUMI_VERSION }}
+            REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}
+          tags: |
+            ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-${{ matrix.language }}:${{ env.RELEASE_VERSION }}
