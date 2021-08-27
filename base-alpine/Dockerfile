@@ -1,4 +1,4 @@
-FROM quay.io/spacelift/runner
+FROM public.ecr.aws/spacelift/runner-terraform
 ARG PULUMI_VERSION
 
 USER root
