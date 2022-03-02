@@ -5,6 +5,13 @@ on:
     tags:
       - 'latest-v*.*.*'
 
+env:
+  AWS_REGION: "us-east-1"
+
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   base-alpine:
     name: Build and deploy the base Alpine image
@@ -17,6 +24,13 @@ jobs:
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 900
+
       - name: Install latest AWS CLI
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
@@ -24,8 +38,6 @@ jobs:
       - name: Login to Amazon ECR
         run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
@@ -49,6 +61,13 @@ jobs:
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 900
+
       - name: Install latest AWS CLI
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
@@ -56,8 +75,6 @@ jobs:
       - name: Login to Amazon ECR
         run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
@@ -83,6 +100,13 @@ jobs:
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 900
+
       - name: Install latest AWS CLI
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
@@ -90,8 +114,6 @@ jobs:
       - name: Login to Amazon ECR
         run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
@@ -117,6 +139,13 @@ jobs:
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 900
+
       - name: Install latest AWS CLI
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
@@ -124,8 +153,6 @@ jobs:
       - name: Login to Amazon ECR
         run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
@@ -151,6 +178,13 @@ jobs:
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 900
+
       - name: Install latest AWS CLI
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
@@ -158,8 +192,6 @@ jobs:
       - name: Login to Amazon ECR
         run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
@@ -185,6 +217,13 @@ jobs:
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 900
+
       - name: Install latest AWS CLI
         id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
@@ -192,8 +231,6 @@ jobs:
       - name: Login to Amazon ECR
         run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
       - name: Build the image
