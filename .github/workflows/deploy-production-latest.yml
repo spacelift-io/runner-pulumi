@@ -19,8 +19,18 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@main
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
+
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
@@ -40,15 +50,14 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Build the image
-        run: cd base-alpine && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-base-alpine:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-base-alpine:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Build and push the image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: base-alpine
+          build-args: PULUMI_VERSION=${{ env.PULUMI_VERSION }}
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-base-alpine:${{ env.RELEASE_VERSION }}
 
   base-debian:
     name: Build and deploy the base Debian image
@@ -56,8 +65,18 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@main
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
+
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
@@ -77,15 +96,14 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Build the image
-        run: cd base-debian && docker build --build-arg PULUMI_VERSION=${PULUMI_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-base-debian:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-base-debian:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Build and push the image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: base-debian
+          build-args: PULUMI_VERSION=${{ env.PULUMI_VERSION }}
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-base-debian:${{ env.RELEASE_VERSION }}
 
   javascript:
     needs:
@@ -95,8 +113,18 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@main
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
+
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
@@ -116,15 +144,16 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Build the image
-        run: cd javascript && docker build --build-arg REPOSITORY_BASE_PATH=${REPOSITORY_BASE_PATH} --build-arg RELEASE_VERSION=${RELEASE_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-javascript:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-javascript:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Build and push the image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: javascript
+          build-args: |
+            REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-javascript:${{ env.RELEASE_VERSION }}
 
   golang:
     needs:
@@ -134,8 +163,18 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@main
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
+
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
@@ -155,15 +194,16 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Build the image
-        run: cd golang && docker build --build-arg REPOSITORY_BASE_PATH=${REPOSITORY_BASE_PATH} --build-arg RELEASE_VERSION=${RELEASE_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-golang:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-golang:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Build and push the image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: golang
+          build-args: |
+            REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-golang:${{ env.RELEASE_VERSION }}
 
   python:
     needs:
@@ -173,8 +213,18 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@main
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
+
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
@@ -194,15 +244,16 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Build the image
-        run: cd python && docker build --build-arg REPOSITORY_BASE_PATH=${REPOSITORY_BASE_PATH} --build-arg RELEASE_VERSION=${RELEASE_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-python:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-python:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Build and push the image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: python
+          build-args: |
+            REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-python:${{ env.RELEASE_VERSION }}
 
   dotnet:
     needs:
@@ -212,8 +263,18 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@main
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Set env
         run: echo "RELEASE_VERSION=latest" >> $GITHUB_ENV
+
       - name: Set env
         run: echo "PULUMI_VERSION=${GITHUB_REF#refs/*/latest-}" >> $GITHUB_ENV
 
@@ -233,12 +294,13 @@ jobs:
         env:
           REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
 
-      - name: Build the image
-        run: cd dotnet && docker build --build-arg REPOSITORY_BASE_PATH=${REPOSITORY_BASE_PATH} --build-arg RELEASE_VERSION=${RELEASE_VERSION} --tag ${REPOSITORY_BASE_PATH}/runner-pulumi-dotnet:${RELEASE_VERSION} .
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
-
-      - name: Push the image to ECR
-        run: docker push ${REPOSITORY_BASE_PATH}/runner-pulumi-dotnet:${RELEASE_VERSION}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+      - name: Build and push the image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: dotnet
+          build-args: |
+            REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-dotnet:${{ env.RELEASE_VERSION }}

@@ -2,16 +2,13 @@ name: Build
 
 on:
   push:
-    ignore-branches: [main, future]
+    branches-ignore: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 env:
-  # The Pulumi version doesn't matter much, it's just used for sanity testing
-  # but worth to update every once in a while
-  PULUMI_VERSION: "v3.46.0"
   REPOSITORY_BASE_PATH: spaceliftbuild
 
 jobs:
@@ -34,6 +31,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
+      - name: Get latest Pulumi version
+        id: latest_version
+        uses: tdemin/find-latest-tag@v1
+        with:
+          repo: https://github.com/pulumi/pulumi.git
+          tag: 'v[0-9]+.[0-9]+\.[0-9]+'
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
         if: matrix.arch == 'arm64'
@@ -50,7 +54,7 @@ jobs:
           CONTEXT: ${{ (matrix.lang == 'javascript' || matrix.lang == 'golang') && 'base-alpine' || 'base-debian' }}
         run: |
           docker build \
-            --build-arg PULUMI_VERSION=${{ env.PULUMI_VERSION }} \
+            --build-arg PULUMI_VERSION=${{ steps.latest_version.outputs.tag }} \
             --build-arg TARGETARCH=${{ matrix.arch }} \
             --platform linux/${{ matrix.arch }} \
             -t ${{ env.REPOSITORY_BASE_PATH }}/${{ env.BASE_IMAGE_NAME }}:${{ github.sha }} \
