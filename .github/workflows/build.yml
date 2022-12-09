@@ -11,7 +11,7 @@ concurrency:
 env:
   # The Pulumi version doesn't matter much, it's just used for sanity testing
   # but worth to update every once in a while
-  PULUMI_VERSION: "v3.46.0"
+  PULUMI_VERSION: "v3.49.0"
   REPOSITORY_BASE_PATH: spaceliftbuild
 
 jobs:
