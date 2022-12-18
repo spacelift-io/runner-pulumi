@@ -41,14 +41,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-duration-seconds: 900
 
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: public
 
       - name: Build and push the image
         uses: docker/build-push-action@v3
@@ -87,14 +83,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-duration-seconds: 900
 
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: public
 
       - name: Build and push the image
         uses: docker/build-push-action@v3
@@ -135,14 +127,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-duration-seconds: 900
 
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: public
 
       - name: Build and push the image
         uses: docker/build-push-action@v3
@@ -185,14 +173,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-duration-seconds: 900
 
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: public
 
       - name: Build and push the image
         uses: docker/build-push-action@v3
@@ -235,14 +219,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-duration-seconds: 900
 
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: public
 
       - name: Build and push the image
         uses: docker/build-push-action@v3
@@ -285,14 +265,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-duration-seconds: 900
 
-      - name: Install latest AWS CLI
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
       - name: Login to Amazon ECR
-        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_BASE_PATH}
-        env:
-          REPOSITORY_BASE_PATH: ${{ secrets.REPOSITORY_BASE_PATH }}
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: public
 
       - name: Build and push the image
         uses: docker/build-push-action@v3
