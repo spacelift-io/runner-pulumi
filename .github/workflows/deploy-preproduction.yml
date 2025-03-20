@@ -311,7 +311,7 @@ jobs:
           context: python
           build-args: |
             REPOSITORY_BASE_PATH=${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
-            RELEASE_VERSION=${{ env.RELEASE_VERSION }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}-fips
           tags: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}/runner-pulumi-python:${{ env.RELEASE_VERSION }}-fips
 
   dotnet:
@@ -372,5 +372,5 @@ jobs:
           context: dotnet
           build-args: |
             REPOSITORY_BASE_PATH=${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}
-            RELEASE_VERSION=${{ env.RELEASE_VERSION }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}-fips
           tags: ${{ secrets.PREPROD_REPOSITORY_BASE_PATH }}/runner-pulumi-dotnet:${{ env.RELEASE_VERSION }}-fips
