@@ -88,8 +88,8 @@ jobs:
             --build-arg REPOSITORY_BASE_PATH=${{ env.REPOSITORY_BASE_PATH }} \
             --build-arg RELEASE_VERSION=${{ github.sha }}-fips \
             --platform linux/${{ matrix.arch }} \
-            -t ${{ env.MAIN_IMAGE_FULL_NAME }} \
-            ${{ matrix.lang }}-fips
+            -t ${{ env.MAIN_IMAGE_FULL_NAME }}-fips \
+            ${{ matrix.lang }}
       
       - name: Pulumi binary sanity test
         run: |
