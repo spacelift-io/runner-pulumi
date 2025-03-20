@@ -58,7 +58,6 @@ jobs:
           context: base-alpine
           build-args: |
             PULUMI_VERSION=${{ env.PULUMI_VERSION }}
-            BASE_IMAGE=public.ecr.aws/spacelift/runner-terraform
           tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-base-alpine:${{ env.RELEASE_VERSION }}
 
       - name: Build and push the fips image
@@ -117,7 +116,6 @@ jobs:
           context: base-debian
           build-args: |
             PULUMI_VERSION=${{ env.PULUMI_VERSION }}
-            BASE_IMAGE=debian:latest
           tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-base-debian:${{ env.RELEASE_VERSION }}
 
       - name: Build and push the fips image
