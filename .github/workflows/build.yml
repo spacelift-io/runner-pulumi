@@ -121,3 +121,4 @@ jobs:
           elif [ "${{ matrix.lang }}" == "dotnet" ]; then
             docker run --rm ${{ env.MAIN_IMAGE_FULL_NAME }}-fips dotnet --version
           fi
+          docker run --rm ${{ env.MAIN_IMAGE_FULL_NAME }}-fips sh -c '[ -n "$OPENSSL_FIPS" ] || exit 1'
