@@ -56,7 +56,7 @@ jobs:
           docker build \
             --build-arg PULUMI_VERSION=${{ steps.latest_version.outputs.tag }} \
             --build-arg TARGETARCH=${{ matrix.arch }} \
-            --build-arg BASE_IMAGE=${{ CONTEXT == 'base-alpine' && 'public.ecr.aws/spacelift/runner-terraform' ||  'debian:latest'}} \
+            --build-arg BASE_IMAGE=${{ env.CONTEXT == 'base-alpine' && 'public.ecr.aws/spacelift/runner-terraform' ||  'debian:latest'}} \
             --platform linux/${{ matrix.arch }} \
             -t ${{ env.REPOSITORY_BASE_PATH }}/${{ env.BASE_IMAGE_NAME }}:${{ github.sha }} \
             $CONTEXT
@@ -68,7 +68,7 @@ jobs:
           docker build \
             --build-arg PULUMI_VERSION=${{ steps.latest_version.outputs.tag }} \
             --build-arg TARGETARCH=${{ matrix.arch }} \
-            --build-arg BASE_IMAGE=${{ CONTEXT == 'base-alpine' && 'public.ecr.aws/spacelift/runner-terraform:latest-fips' ||  'ghcr.io/spacelift-io/debian-fips:base-latest'}} \
+            --build-arg BASE_IMAGE=${{ env.CONTEXT == 'base-alpine' && 'public.ecr.aws/spacelift/runner-terraform:latest-fips' ||  'ghcr.io/spacelift-io/debian-fips:base-latest'}} \
             --platform linux/${{ matrix.arch }} \
             -t ${{ env.REPOSITORY_BASE_PATH }}/${{ env.BASE_IMAGE_NAME }}:${{ github.sha }}-fips \
             $CONTEXT
