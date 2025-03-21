@@ -56,8 +56,20 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           context: base-alpine
-          build-args: PULUMI_VERSION=${{ env.PULUMI_VERSION }}
+          build-args: |
+            PULUMI_VERSION=${{ env.PULUMI_VERSION }}
           tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-base-alpine:${{ env.RELEASE_VERSION }}
+
+      - name: Build and push the fips image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: base-alpine
+          build-args: |
+            PULUMI_VERSION=${{ env.PULUMI_VERSION }}
+            BASE_IMAGE=public.ecr.aws/spacelift/runner-terraform:latest-fips
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-base-alpine:${{ env.RELEASE_VERSION }}-fips
 
   base-debian:
     name: Build and deploy the base Debian image
@@ -102,8 +114,20 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           context: base-debian
-          build-args: PULUMI_VERSION=${{ env.PULUMI_VERSION }}
+          build-args: |
+            PULUMI_VERSION=${{ env.PULUMI_VERSION }}
           tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-base-debian:${{ env.RELEASE_VERSION }}
+
+      - name: Build and push the fips image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: base-debian
+          build-args: |
+            PULUMI_VERSION=${{ env.PULUMI_VERSION }}
+            BASE_IMAGE=ghcr.io/spacelift-io/debian-fips:base-latest
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-base-debian:${{ env.RELEASE_VERSION }}-fips
 
   javascript:
     needs:
@@ -155,6 +179,17 @@ jobs:
             RELEASE_VERSION=${{ env.RELEASE_VERSION }}
           tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-javascript:${{ env.RELEASE_VERSION }}
 
+      - name: Build and push the fips image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: javascript
+          build-args: |
+            REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}-fips
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-javascript:${{ env.RELEASE_VERSION }}-fips
+
   golang:
     needs:
       - base-alpine
@@ -204,6 +239,17 @@ jobs:
             REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
             RELEASE_VERSION=${{ env.RELEASE_VERSION }}
           tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-golang:${{ env.RELEASE_VERSION }}
+
+      - name: Build and push the fips image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: golang
+          build-args: |
+            REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}-fips
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-golang:${{ env.RELEASE_VERSION }}-fips
 
   python:
     needs:
@@ -255,6 +301,17 @@ jobs:
             RELEASE_VERSION=${{ env.RELEASE_VERSION }}
           tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-python:${{ env.RELEASE_VERSION }}
 
+      - name: Build and push the fips image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: python
+          build-args: |
+            REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}-fips
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-python:${{ env.RELEASE_VERSION }}-fips
+
   dotnet:
     needs:
       - base-debian
@@ -304,3 +361,14 @@ jobs:
             REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
             RELEASE_VERSION=${{ env.RELEASE_VERSION }}
           tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-dotnet:${{ env.RELEASE_VERSION }}
+
+      - name: Build and push the fips image
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          context: dotnet
+          build-args: |
+            REPOSITORY_BASE_PATH=${{ secrets.REPOSITORY_BASE_PATH }}
+            RELEASE_VERSION=${{ env.RELEASE_VERSION }}-fips
+          tags: ${{ secrets.REPOSITORY_BASE_PATH }}/runner-pulumi-dotnet:${{ env.RELEASE_VERSION }}-fips

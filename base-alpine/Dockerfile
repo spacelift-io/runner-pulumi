@@ -1,4 +1,5 @@
-FROM public.ecr.aws/spacelift/runner-terraform
+ARG BASE_IMAGE=public.ecr.aws/spacelift/runner-terraform
+FROM $BASE_IMAGE
 ARG PULUMI_VERSION
 ARG TARGETARCH
 
