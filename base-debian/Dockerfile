@@ -4,7 +4,7 @@ ARG PULUMI_VERSION
 ARG TARGETARCH
 
 RUN echo "hosts: files dns" > /etc/nsswitch.conf \
-  && adduser --disabled-password --uid=1983 spacelift
+  && useradd --create-home --shell /bin/bash --uid 1983 spacelift
 
 USER root
 WORKDIR /home/spacelift
